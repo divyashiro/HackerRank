@@ -1,0 +1,22 @@
+	/** 
+	 * Given an integer array nums and integer k , return the k most frequent elements. You may return answer in any order.
+	 * nums = [1,1,1,2,2,5,4] k = 2
+	 * o/p = [1,2]
+	 */
+		
+		List<Integer> inputList = Arrays.asList(1,1,1,2,2,5,4);
+		int k = 2;
+		
+		Map<Integer, Integer> freqMap = new HashMap<>();
+		inputList.forEach(x -> {
+			if(freqMap.containsKey(x)) {
+				freqMap.put(x, freqMap.get(x) + 1);
+			} else {
+				freqMap.put(x,1);
+			}
+		});
+		freqMap.forEach((key, value) -> {
+			if(value >= k) {
+				System.out.println(key);
+			}
+		});
