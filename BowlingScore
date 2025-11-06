@@ -1,0 +1,63 @@
+package com.zed.booking;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+/**
+* Open frame (sum < 10): just add the pins.
+* Spare (sum == 10 and two rolls): 10 + next roll as bonus.
+* Strike (one roll == 10): 10 + next two rolls as bonus.
+**/
+public class BowlingScoreApplication {
+	public static void main(String[] args) {
+		
+		 List<List<Integer>> frames = Arrays.asList(
+		            Arrays.asList(5, 3),
+		            Arrays.asList(10),
+		            Arrays.asList(4, 6)
+		        );
+
+		        int score = calculateScore(frames);
+		        System.out.println("Total score: " + score); 
+		    }
+
+		 public static int calculateScore(List<List<Integer>> frames) {
+		        int totalScore = 0;
+		        List<Integer> rolls = new ArrayList<>();
+		        for (List<Integer> frame : frames) {
+		            rolls.addAll(frame);
+		        }
+
+		        int rollIndex = 0;
+		        for (int i = 0; i < frames.size(); i++) {
+		            List<Integer> frame = frames.get(i);
+
+		            if (frame.size() == 1 && frame.get(0) == 10) {
+		                // Strike
+		                totalScore += 10 + getNextTwoRolls(rolls, rollIndex);
+		                rollIndex += 1;
+		            } else if (frame.size() == 2 && frame.get(0) + frame.get(1) == 10) {
+		                // Spare
+		                totalScore += 10 + getNextRoll(rolls, rollIndex + 2);
+		                rollIndex += 2;
+		            } else {
+		                // Open frame
+		                totalScore += frame.get(0) + frame.get(1);
+		                rollIndex += 2;
+		            }
+		        }
+		        return totalScore;
+		    }
+
+		    private static int getNextTwoRolls(List<Integer> rolls, int currentIndex) {
+		        int bonus = 0;
+		        if (currentIndex + 1 < rolls.size()) bonus += rolls.get(currentIndex + 1);
+		        if (currentIndex + 2 < rolls.size()) bonus += rolls.get(currentIndex + 2);
+		        return bonus;
+		    }
+
+		    private static int getNextRoll(List<Integer> rolls, int index) {
+		        return (index < rolls.size()) ? rolls.get(index) : 0;
+		    }
+			}
+			
